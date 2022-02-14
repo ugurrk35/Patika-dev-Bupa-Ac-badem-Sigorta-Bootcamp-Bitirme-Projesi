@@ -6,7 +6,7 @@
 
 
 
-- .net 5.0 web api ado.net katmanlı mimari ile yazıldı
+- .net 5.0 web api katmanlı mimari ile yazıldı
 - Tüm İşlemler procedure ve trigger kullanılarak yapıldı
 - Database olarak oracle tercih tercih edildi.
 - Önyüz uygulaması .net 5.0 mvc genel müdürlük (Yönetim paneli) kısmında ise iki ayrı proje yapıldı
