@@ -1,0 +1,823 @@
+--------------------------------------------------------
+--  File created - Pazartesi-Şubat-14-2022   
+--------------------------------------------------------
+DROP SEQUENCE "C##BUPA"."CUSTOMERS_SEQ";
+DROP SEQUENCE "C##BUPA"."ORDERS_SEQ";
+DROP SEQUENCE "C##BUPA"."PRODUCTS_SEQ";
+DROP SEQUENCE "C##BUPA"."SIPARIS_SEQ";
+DROP TABLE "C##BUPA"."CUSTOMERS" cascade constraints;
+DROP TABLE "C##BUPA"."ORDER_DETAILS" cascade constraints;
+DROP TABLE "C##BUPA"."ORDERS" cascade constraints;
+DROP TABLE "C##BUPA"."PRODUCTS" cascade constraints;
+DROP VIEW "C##BUPA"."CUSTOMERVIEWMODEL";
+DROP VIEW "C##BUPA"."VW_CUSTOMERS_ORDERS_DETAIL2";
+DROP PROCEDURE "C##BUPA"."ADDPRODUCT";
+DROP PROCEDURE "C##BUPA"."BP_CUSTOMER_DELETE_ID";
+DROP PROCEDURE "C##BUPA"."BP_ORDER_DELETE_ID";
+DROP PROCEDURE "C##BUPA"."BP_PRODUCT_DELETE_ID";
+DROP PROCEDURE "C##BUPA"."C_GET_ALL_CUSTOMER";
+DROP PROCEDURE "C##BUPA"."CREATECUSTOMER";
+DROP PROCEDURE "C##BUPA"."CREATEORDERCUSTOMER";
+DROP PROCEDURE "C##BUPA"."CUSTORDERSDETAIL";
+DROP PROCEDURE "C##BUPA"."OP_SIPARIS_CREATE";
+DROP PROCEDURE "C##BUPA"."SP_GET_ALL_ORDER";
+DROP PROCEDURE "C##BUPA"."SP_GET_CUSTOMER_ID";
+DROP PROCEDURE "C##BUPA"."SP_GET_ORDERS";
+DROP PROCEDURE "C##BUPA"."SP_ORDER_LIST";
+DROP PROCEDURE "C##BUPA"."SP_ORDERS_LIST";
+DROP PROCEDURE "C##BUPA"."SP_PRODUCT_LIST";
+DROP PROCEDURE "C##BUPA"."SP_PRODUCT_UPDATE";
+DROP PROCEDURE "C##BUPA"."USP_GETCUSTOMER";
+DROP PACKAGE "C##BUPA"."GET_DENEME";
+DROP PACKAGE BODY "C##BUPA"."GET_DENEME";
+--------------------------------------------------------
+--  DDL for Sequence CUSTOMERS_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "C##BUPA"."CUSTOMERS_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 424 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence ORDERS_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "C##BUPA"."ORDERS_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 101 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence PRODUCTS_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "C##BUPA"."PRODUCTS_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1081 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Sequence SIPARIS_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "C##BUPA"."SIPARIS_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+--------------------------------------------------------
+--  DDL for Table CUSTOMERS
+--------------------------------------------------------
+
+  CREATE TABLE "C##BUPA"."CUSTOMERS" 
+   (	"CUSTOMER_ID" NUMBER(*,0), 
+	"FIRSTNAME" NVARCHAR2(150), 
+	"SURNAME" NVARCHAR2(50), 
+	"JOB" NVARCHAR2(40), 
+	"ADRESS" VARCHAR2(60 BYTE), 
+	"CITY" VARCHAR2(30 BYTE), 
+	"POSTAL_CODE" NVARCHAR2(10), 
+	"PHONE" VARCHAR2(20 BYTE), 
+	"CARD_NAME" VARCHAR2(20 BYTE), 
+	"CARD_NUMBER" VARCHAR2(20 BYTE), 
+	"EXPIRATION" VARCHAR2(20 BYTE), 
+	"CVV" VARCHAR2(20 BYTE), 
+	"TAKSIT" VARCHAR2(20 BYTE)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Table ORDER_DETAILS
+--------------------------------------------------------
+
+  CREATE TABLE "C##BUPA"."ORDER_DETAILS" 
+   (	"ORDER_ID" NUMBER(*,0), 
+	"PRODUCT_ID" NUMBER(*,0), 
+	"PRICE" NVARCHAR2(20)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Table ORDERS
+--------------------------------------------------------
+
+  CREATE TABLE "C##BUPA"."ORDERS" 
+   (	"ORDER_ID" NUMBER(*,0), 
+	"CUSTOMER_ID" NUMBER(*,0), 
+	"ORDER_DATE" NVARCHAR2(20)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+
+   COMMENT ON COLUMN "C##BUPA"."ORDERS"."ORDER_DATE" IS 'siparis tarihi';
+--------------------------------------------------------
+--  DDL for Table PRODUCTS
+--------------------------------------------------------
+
+  CREATE TABLE "C##BUPA"."PRODUCTS" 
+   (	"PRODUCT_ID" NUMBER(*,0), 
+	"PRODUCT_NAME" VARCHAR2(40 BYTE), 
+	"PRICE" NUMBER(*,0), 
+	"DESCRIPTION" VARCHAR2(90 BYTE)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for View CUSTOMERVIEWMODEL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "C##BUPA"."CUSTOMERVIEWMODEL" ("FIRSTNAME", "SURNAME", "ADRESS") AS 
+  select FIRSTNAME,SURNAME,ADRESS
+    from CUSTOMERS
+
+;
+--------------------------------------------------------
+--  DDL for View VW_CUSTOMERS_ORDERS_DETAIL2
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "C##BUPA"."VW_CUSTOMERS_ORDERS_DETAIL2" ("FIRSTNAME", "SURNAME", "JOB", "ADRESS", "CITY", "POSTAL_CODE", "PHONE", "CARD_NAME", "CARD_NUMBER", "EXPIRATION", "CVV", "TAKSIT", "ORDER_DATE", "PRICE", "PRODUCT_ID") AS 
+  SELECT
+        firstname,
+        surname,
+        job,
+        adress,
+        city,
+        postal_code,
+        phone,
+        card_name,
+        card_number,
+        expiration,
+        cvv,
+        taksit,
+        order_date,
+        price,
+        product_id
+
+
+
+    FROM
+        orders
+    INNER JOIN order_details USING (order_id)
+    INNER JOIN customers USING (customer_id)
+
+;
+REM INSERTING into C##BUPA.CUSTOMERS
+SET DEFINE OFF;
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('418','emine','acar','sad','dasd','İzmir','434','3434','emine acar','34343434343343','23/22','233','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('419','ahmet','demir','asdasd','asdasd','İzmir','334','343443','ahmet demir','34343 34 343 43 34 ','22','233','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('409','şafak','hoca','sdsd','sdsd','İzmir','343','343','434','34','34','34','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('410','başak','başak','hj','h','İzmir','4545','4545','dsffdd','4545','454','45','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('412','pırasa','pırasa','pırasa','saddsad','İzmir','sad','3434','sdasd','454545','454','45','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('415','ffff','ff','ff','ff','f','ff','strffing','sdsd','4545','454','444','3');
+Insert into C##BUPA.CUSTOMERS (CUSTOMER_ID,FIRSTNAME,SURNAME,JOB,ADRESS,CITY,POSTAL_CODE,PHONE,CARD_NAME,CARD_NUMBER,EXPIRATION,CVV,TAKSIT) values ('416','ffff','ff','ff','ff','f','ff','strffing','sdsd','4545','454','444','3');
+REM INSERTING into C##BUPA.ORDER_DETAILS
+SET DEFINE OFF;
+Insert into C##BUPA.ORDER_DETAILS (ORDER_ID,PRODUCT_ID,PRICE) values ('89','1','500 ');
+Insert into C##BUPA.ORDER_DETAILS (ORDER_ID,PRODUCT_ID,PRICE) values ('82','1','500');
+Insert into C##BUPA.ORDER_DETAILS (ORDER_ID,PRODUCT_ID,PRICE) values ('83','1','500');
+Insert into C##BUPA.ORDER_DETAILS (ORDER_ID,PRODUCT_ID,PRICE) values ('85','1','500');
+Insert into C##BUPA.ORDER_DETAILS (ORDER_ID,PRODUCT_ID,PRICE) values ('88','1','500 ');
+REM INSERTING into C##BUPA.ORDERS
+SET DEFINE OFF;
+Insert into C##BUPA.ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_DATE) values ('88','418','14-Şub-2022');
+Insert into C##BUPA.ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_DATE) values ('82','409','12-Şub-2022');
+Insert into C##BUPA.ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_DATE) values ('83','410','12-Şub-2022');
+Insert into C##BUPA.ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_DATE) values ('85','412','12-Şub-2022');
+Insert into C##BUPA.ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_DATE) values ('89','419','14-Şub-2022');
+REM INSERTING into C##BUPA.PRODUCTS
+SET DEFINE OFF;
+Insert into C##BUPA.PRODUCTS (PRODUCT_ID,PRODUCT_NAME,PRICE,DESCRIPTION) values ('1','Ayakta tedavi','500','ayakta tedavi aciklama');
+Insert into C##BUPA.PRODUCTS (PRODUCT_ID,PRODUCT_NAME,PRICE,DESCRIPTION) values ('2','yatarak tedavi','1000','yatarak tedavi aciklamasi');
+Insert into C##BUPA.PRODUCTS (PRODUCT_ID,PRODUCT_NAME,PRICE,DESCRIPTION) values ('3','ayatak ve yatarak tedavi','1500','ayakta ve yatarak tedavi aciklamasi');
+--------------------------------------------------------
+--  DDL for Index PK_CUSTOMERS_CUSTOMER_ID
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "C##BUPA"."PK_CUSTOMERS_CUSTOMER_ID" ON "C##BUPA"."CUSTOMERS" ("CUSTOMER_ID") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Index PK_ORDERS_ORDER_ID
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "C##BUPA"."PK_ORDERS_ORDER_ID" ON "C##BUPA"."ORDERS" ("ORDER_ID") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Index PK_PRODUCTS_PRODUCT_ID
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "C##BUPA"."PK_PRODUCTS_PRODUCT_ID" ON "C##BUPA"."PRODUCTS" ("PRODUCT_ID") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Trigger CUSTOMERS_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "C##BUPA"."CUSTOMERS_TRG" 
+BEFORE INSERT ON CUSTOMERS 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.CUSTOMER_ID IS NULL THEN
+      SELECT CUSTOMERS_SEQ.NEXTVAL INTO :NEW.CUSTOMER_ID FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+ALTER TRIGGER "C##BUPA"."CUSTOMERS_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger NEW_CUSTOMERORDERDET_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "C##BUPA"."NEW_CUSTOMERORDERDET_TRG" 
+  INSTEAD OF INSERT ON VW_CUSTOMERS_ORDERS_DETAIL2
+  FOR EACH ROW
+DECLARE
+  l_customer_id NUMBER;
+  p_order_id    NUMBER;
+BEGIN
+
+  -- insert a new customer first
+  INSERT INTO customers
+    (firstname,
+     surname,
+     job,
+     adress,
+     city,
+     postal_code,
+     card_name,
+     phone,
+     card_number,
+     expiration,
+     cvv,
+     taksit)
+  VALUES
+    (:NEW.firstname,
+     :NEW.surname,
+     :NEW.job,
+     :NEW.adress,
+     :NEW.city,
+     :NEW.postal_code,   
+     :NEW.card_name,
+     :NEW.phone,
+     :NEW.card_number,
+     :NEW.expiration,
+     :NEW.cvv,
+     :NEW.taksit)
+  
+  RETURNING customer_id INTO l_customer_id;
+
+  -- insert the ORDER
+
+  INSERT INTO orders
+    (order_date, customer_id)
+  VALUES
+    (:NEW.order_date, l_customer_id)
+  RETURNING order_id
+    INTO p_order_id;
+    
+ INSERT INTO order_details
+    (price, product_id, order_id)
+  VALUES
+    (:NEW.price, :NEW.product_id, p_order_id);
+
+END;
+
+/
+ALTER TRIGGER "C##BUPA"."NEW_CUSTOMERORDERDET_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger ORDERS_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "C##BUPA"."ORDERS_TRG" 
+BEFORE INSERT ON ORDERS 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.ORDER_ID IS NULL THEN
+      SELECT ORDERS_SEQ.NEXTVAL INTO :NEW.ORDER_ID FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+ALTER TRIGGER "C##BUPA"."ORDERS_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PRODUCTS_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "C##BUPA"."PRODUCTS_TRG" 
+BEFORE INSERT ON PRODUCTS 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.PRODUCT_ID IS NULL THEN
+      SELECT PRODUCTS_SEQ.NEXTVAL INTO :NEW.PRODUCT_ID FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+ALTER TRIGGER "C##BUPA"."PRODUCTS_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Procedure ADDPRODUCT
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."ADDPRODUCT" (
+                                       
+                                       p_productname IN PRODUCTS.PRODUCT_NAME%TYPE,
+                                       p_price       IN PRODUCTS.PRICE%TYPE,
+                                       p_description IN PRODUCTS.DESCRIPTION%TYPE) IS
+BEGIN
+
+  INSERT INTO PRODUCTS
+    (PRODUCT_NAME, PRICE, DESCRIPTION)
+  VALUES
+    (p_productname, p_price, p_description);
+
+  COMMIT;
+
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure BP_CUSTOMER_DELETE_ID
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."BP_CUSTOMER_DELETE_ID" (
+
+BP_CUSTOMER_ID IN CUSTOMERS.CUSTOMER_ID%TYPE
+) is
+begin
+  DELETE FROM CUSTOMERS WHERE CUSTOMER_ID=BP_CUSTOMER_ID;
+  COMMIT;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure BP_ORDER_DELETE_ID
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."BP_ORDER_DELETE_ID" (
+
+BP_ORDER_ID IN ORDERS.ORDER_ID%TYPE
+
+) is
+begin
+  DELETE FROM ORDERS WHERE BP_ORDER_ID=BP_ORDER_ID;
+  COMMIT;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure BP_PRODUCT_DELETE_ID
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."BP_PRODUCT_DELETE_ID" (
+
+BP_PRODUCT_ID IN PRODUCTS.PRODUCT_ID%TYPE
+
+) is
+begin
+  DELETE FROM PRODUCTS WHERE PRODUCT_ID=BP_PRODUCT_ID;
+  COMMIT;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure C_GET_ALL_CUSTOMER
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."C_GET_ALL_CUSTOMER" (orde out sys_refcursor) as
+begin
+  open orde for
+    select * from customers;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure CREATECUSTOMER
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."CREATECUSTOMER" (
+                                           
+                                           c_customerFirstName  IN CUSTOMERS.FIRSTNAME%TYPE,
+                                           c_customerSurname    IN CUSTOMERS.SURNAME%TYPE,
+                                           c_customerJob        IN CUSTOMERS.JOB%TYPE,
+                                           c_customerAdress     IN CUSTOMERS.ADRESS%TYPE,
+                                           c_customerCity       IN CUSTOMERS.CITY%TYPE,
+                                           c_customerPostalCode IN CUSTOMERS.POSTAL_CODE%TYPE,
+                                           c_customerPhone      IN CUSTOMERS.PHONE%TYPE,
+                                           c_customerCardName   IN CUSTOMERS.CARD_NAME%TYPE,
+                                           c_customerCardNumber IN CUSTOMERS.CARD_NUMBER%TYPE,
+                                           c_customerExpiration IN CUSTOMERS.EXPIRATION%TYPE,
+                                           c_customerCvv        IN CUSTOMERS.CVV%TYPE,
+                                           c_customerTaksit     IN CUSTOMERS.TAKSIT%TYPE
+                                           
+                                           ) IS
+BEGIN
+
+  INSERT INTO CUSTOMERS
+    (FIRSTNAME,
+     SURNAME,
+     JOB,
+     ADRESS,
+     CITY,
+     POSTAL_CODE,
+     PHONE,
+     CARD_NAME,
+     CARD_NUMBER,
+     EXPIRATION,
+     CVV,
+     TAKSIT)
+  VALUES
+    (c_customerFirstName,
+     c_customerSurname,
+     c_customerJob,
+     c_customerAdress,
+     c_customerCity,
+     c_customerPostalCode,
+     c_customerPhone,
+     c_customerCardName,
+     c_customerCardNumber,
+     c_customerExpiration,
+     c_customerCvv,
+     c_customerTaksit);
+
+  COMMIT;
+
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure CREATEORDERCUSTOMER
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."CREATEORDERCUSTOMER" (
+
+                                           c_customerOrderFirstName  IN VW_CUSTOMERS_ORDERS_DETAIL2.FIRSTNAME%TYPE,
+                                           c_customerOrderSurname    IN VW_CUSTOMERS_ORDERS_DETAIL2.SURNAME%TYPE,
+                                           c_customerOrderJob        IN VW_CUSTOMERS_ORDERS_DETAIL2.JOB%TYPE,
+                                           c_customerOrderAdress     IN VW_CUSTOMERS_ORDERS_DETAIL2.ADRESS%TYPE,
+                                           c_customerOrderCity       IN VW_CUSTOMERS_ORDERS_DETAIL2.CITY%TYPE,
+                                           c_customerOrderPhone      IN VW_CUSTOMERS_ORDERS_DETAIL2.PHONE%TYPE,
+                                           c_customerOrderPostalCode IN VW_CUSTOMERS_ORDERS_DETAIL2.POSTAL_CODE%TYPE,    
+                                           c_customerOrderCardName   IN VW_CUSTOMERS_ORDERS_DETAIL2.CARD_NAME%TYPE,
+                                           c_customerOrderCardNumber IN VW_CUSTOMERS_ORDERS_DETAIL2.CARD_NUMBER%TYPE,
+                                           c_customerOrderExpiration IN VW_CUSTOMERS_ORDERS_DETAIL2.EXPIRATION%TYPE,
+                                           c_customerOrderCvv        IN VW_CUSTOMERS_ORDERS_DETAIL2.CVV%TYPE,
+                                           c_customerOrderTaksit     IN VW_CUSTOMERS_ORDERS_DETAIL2.taksit%TYPE,
+                                           c_customerOrderOrderDate IN VW_CUSTOMERS_ORDERS_DETAIL2.order_date%TYPE,
+                                           c_customerOrderPrice    IN VW_CUSTOMERS_ORDERS_DETAIL2.price%TYPE,
+                                           c_customerOrderProductId  IN VW_CUSTOMERS_ORDERS_DETAIL2.product_id%TYPE
+
+
+                                           ) IS
+BEGIN
+
+  INSERT INTO VW_CUSTOMERS_ORDERS_DETAIL2
+    (FIRSTNAME,
+     SURNAME,
+     JOB,
+     ADRESS,
+     CITY,
+      PHONE,
+     POSTAL_CODE,   
+     CARD_NAME,
+     CARD_NUMBER,
+     EXPIRATION,
+     CVV,
+     TAKSIT,
+     ORDER_DATE,
+     PRICE,
+     PRODUCT_ID)
+  VALUES
+    (c_customerOrderFirstName,
+     c_customerOrderSurname,
+     c_customerOrderJob,
+     c_customerOrderAdress,
+     c_customerOrderCity,
+     c_customerOrderPhone,
+     c_customerOrderPostalCode,   
+     c_customerOrderCardName,
+     c_customerOrderCardNumber,
+     c_customerOrderExpiration,
+     c_customerOrderCvv,
+     c_customerOrderTaksit,
+     c_customerOrderOrderDate,
+     c_customerOrderPrice,
+     c_customerOrderProductId);
+
+  COMMIT;
+
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure CUSTORDERSDETAIL
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."CUSTORDERSDETAIL" 
+(
+       P_ORDER_ID in INTEGER,
+       P_PRODUCT_NAME OUT NVARCHAR2
+)
+AS
+BEGIN
+--SELECT p.product_name into P_PRODUCT_NAME
+--FROM Products P, order_details Od
+--WHERE Od.Product_Id = P.PRODUCT_ID and Od.Order_Id = P_ORDER_ID;
+SELECT 'patates' into P_PRODUCT_NAME FROM PRODUCTS P WHERE P.PRODUCT_ID=1;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure OP_SIPARIS_CREATE
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."OP_SIPARIS_CREATE" (
+                                              
+                                              c_siparisFirstName IN SIPARIS.FIRST_NAME%TYPE,
+                                              c_siparisSurname   IN SIPARIS.LAST_NAME%TYPE,
+                                              c_siparisYas       IN SIPARIS.YAS%TYPE,
+                                              c_siparisAdress    IN SIPARIS.ADRESS%TYPE,
+                                              c_siparisZip       IN SIPARIS.ZIP%TYPE,
+                                              c_siparisCity      IN SIPARIS.CITY%TYPE,
+                                              c_siparisCardname  IN SIPARIS.CARD_NAME%TYPE,
+                                              c_siparisCarnumber IN SIPARIS.CARD_NUMBER%TYPE,
+                                              c_siparisExp       IN SIPARIS.EXPIRATION%TYPE,
+                                              c_siparisCvv       IN SIPARIS.CVV%TYPE,
+                                              c_siparisTaksit    IN SIPARIS.TAKSIT%TYPE) IS
+BEGIN
+
+  INSERT INTO SIPARIS
+    (FIRST_NAME,
+     LAST_NAME,
+     YAS,
+     ADRESS,
+     ZIP,
+     CITY,
+     CARD_NAME,
+     CARD_NUMBER,
+     EXPIRATION,
+     CVV,
+     TAKSIT)
+  VALUES
+    (c_siparisFirstName,
+     c_siparisSurname,
+     c_siparisYas,
+     c_siparisAdress,
+     c_siparisZip,
+     c_siparisCity,
+     c_siparisCardname,
+     c_siparisCarnumber,
+     c_siparisExp,
+     c_siparisCvv,
+     c_siparisTaksit
+     
+     );
+
+  COMMIT;
+
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_GET_ALL_ORDER
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_GET_ALL_ORDER" 
+(
+
+  ss out sys_refcursor
+)as
+begin
+  open ss for select o.order_id,c.firstname||' '||c.surname as customer_name,
+   order_Date,
+    pr.product_name,od.Price
+    from orders o
+    inner join order_details od on (o.order_id = od.order_id)
+    left outer join products pr on (pr.product_id = od.product_id)
+    left outer join customers c on (c.customer_id = o.customer_id);
+    commit;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_GET_CUSTOMER_ID
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_GET_CUSTOMER_ID" (P_ID    in customers.customer_id%type,
+                                          results out sys_refcursor) as
+begin
+  open results for
+    select *
+        
+      from customers
+     
+     where customer_id = P_ID;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_GET_ORDERS
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_GET_ORDERS" 
+(
+  P_ID in orders.customer_id%type,
+  results out sys_refcursor
+)as
+begin
+  open results for select o.order_id,c.firstname||' '||c.surname as customer_name,
+order_date,
+    pr.product_name,od.price
+    from orders o
+    inner join order_details od on (o.order_id = od.order_id)
+    left outer join products pr on (pr.product_id = od.product_id)
+    left outer join customers c on (c.customer_id = o.customer_id)
+    where o.customer_id = P_ID;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_ORDER_LIST
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_ORDER_LIST" 
+(
+   orde out sys_refcursor
+)as
+begin
+  open orde for select * from orders;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_ORDERS_LIST
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_ORDERS_LIST" 
+(
+   orde out sys_refcursor
+)as
+begin
+  open orde for select * from orders;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_PRODUCT_LIST
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_PRODUCT_LIST" 
+(
+   prod out sys_refcursor
+)as
+begin
+  open prod for select * from products;
+end;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure SP_PRODUCT_UPDATE
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."SP_PRODUCT_UPDATE" (P_PRODUCT_ID   PRODUCTS.PRODUCT_ID%TYPE,
+                                              P_PRODUCT_NAME PRODUCTS.PRODUCT_NAME%TYPE,
+                                              P_PRICE        PRODUCTS.PRICE%TYPE,
+                                              P_DESCRIPTION  PRODUCTS.DESCRIPTION%TYPE) AS
+BEGIN
+  UPDATE PRODUCTS
+     SET PRODUCT_NAME = P_PRODUCT_NAME,
+         PRICE        = P_PRICE,
+         DESCRIPTION  = P_DESCRIPTION
+   WHERE PRODUCT_ID = P_PRODUCT_ID;
+  COMMIT;
+END;
+
+/
+--------------------------------------------------------
+--  DDL for Procedure USP_GETCUSTOMER
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "C##BUPA"."USP_GETCUSTOMER" (  
+    CUSTOMERS OUT SYS_REFCURSOR  
+)  
+AS  
+Begin  
+Open CUSTOMERS For  
+SELECT FIRSTNAME FROM CUSTOMERS;  
+End;
+
+/
+--------------------------------------------------------
+--  DDL for Package GET_DENEME
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE PACKAGE "C##BUPA"."GET_DENEME" 
+as
+ type t_cursor is ref cursor;
+ procedure get_customer(cur_customer out t_cursor);
+end  Get_deneme;
+
+/
+--------------------------------------------------------
+--  DDL for Package Body GET_DENEME
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE PACKAGE BODY "C##BUPA"."GET_DENEME" 
+as
+ procedure get_employee(cur_employees out t_cursor)
+ is
+ begin
+  open cur_customer for select * from CUSTOMERS;
+ end get_customer;
+end Get_deneme;
+
+/
+--------------------------------------------------------
+--  Constraints for Table PRODUCTS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."PRODUCTS" MODIFY ("PRODUCT_ID" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."PRODUCTS" MODIFY ("PRODUCT_NAME" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."PRODUCTS" ADD CONSTRAINT "PK_PRODUCTS_PRODUCT_ID" PRIMARY KEY ("PRODUCT_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS"  ENABLE;
+--------------------------------------------------------
+--  Constraints for Table ORDER_DETAILS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."ORDER_DETAILS" MODIFY ("ORDER_ID" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."ORDER_DETAILS" MODIFY ("PRODUCT_ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table ORDERS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."ORDERS" MODIFY ("ORDER_ID" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."ORDERS" MODIFY ("CUSTOMER_ID" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."ORDERS" ADD CONSTRAINT "PK_ORDERS_ORDER_ID" PRIMARY KEY ("ORDER_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS"  ENABLE;
+--------------------------------------------------------
+--  Constraints for Table CUSTOMERS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."CUSTOMERS" MODIFY ("CUSTOMER_ID" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."CUSTOMERS" MODIFY ("FIRSTNAME" NOT NULL ENABLE);
+  ALTER TABLE "C##BUPA"."CUSTOMERS" ADD CONSTRAINT "PK_CUSTOMERS_CUSTOMER_ID" PRIMARY KEY ("CUSTOMER_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS"  ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table ORDER_DETAILS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."ORDER_DETAILS" ADD CONSTRAINT "FK_ORDER_DETAILS_PRODUCT_ID" FOREIGN KEY ("PRODUCT_ID")
+	  REFERENCES "C##BUPA"."PRODUCTS" ("PRODUCT_ID") ON DELETE CASCADE ENABLE;
+  ALTER TABLE "C##BUPA"."ORDER_DETAILS" ADD CONSTRAINT "FK_ORDER_DETAILS_ORDER_ID" FOREIGN KEY ("ORDER_ID")
+	  REFERENCES "C##BUPA"."ORDERS" ("ORDER_ID") ON DELETE CASCADE ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table ORDERS
+--------------------------------------------------------
+
+  ALTER TABLE "C##BUPA"."ORDERS" ADD CONSTRAINT "FK_ORDERS_CUSTOMER_ID" FOREIGN KEY ("CUSTOMER_ID")
+	  REFERENCES "C##BUPA"."CUSTOMERS" ("CUSTOMER_ID") ON DELETE CASCADE ENABLE;
