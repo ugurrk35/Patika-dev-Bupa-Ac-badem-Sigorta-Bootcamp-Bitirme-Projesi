@@ -16,7 +16,7 @@
 - Bütün uygulamalar .net core Web API üzerinden işlem yapmaktadır
 
 
-###  [Youtube](https://nodejs.org/) proje tanıtımı
+###  [Youtube](https://www.youtube.com/watch?v=NOof6yEXZOI) proje tanıtımı
 
 
 
