@@ -1,0 +1,206 @@
+﻿@model Bupa.WebUI.Models.CheckoutModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Checkout</h1>
+<div class="container">
+
+    <h4>CheckoutModel </h4>
+    <hr />
+    <div class="row">
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary"></span>
+                    <span class="badge bg-primary rounded-pill">POLİÇE ÜCRETİ</span>
+                </h4>
+                <ul class="list-group mb-3">
+
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Ayakta tedavi</h6>
+                            <small class="text-muted">Ayakta tedavi poliçesi</small>
+                        </div>
+
+                    </li>
+
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Poliçe Ücretiniz</span>
+                        <strong>500 TL</strong>
+                    </li>
+                </ul>
+
+
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <form asp-action="Checkout">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <label asp-for="Firstname" class="form-label">İsim</label>
+                            <input asp-for="Firstname" class="form-control" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label asp-for="Surname" class="form-label">Soyisim</label>
+                            <input asp-for="Surname" class="form-control" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+
+
+                        <div class="col-4">
+                            <label asp-for="Job" class="form-label">Meslek</label>
+                            <input asp-for="Job" class="form-control" placeholder="1234 Main St" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Adress" class="form-label">Adres</label>
+                            <input asp-for="Adress" class="form-control" placeholder="1234 Main St" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <label asp-for="City" class="form-label">Şehir</label>
+                            <select asp-for="City" class="form-select" required="">
+                                <option value="İzmir">İzmir</option>
+                                <option value="Istanbul">İstanbul</option>
+                                <option>Ankara</option>
+                                <option>Bursa</option>
+                                <option>Antalya</option>
+
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Phone" class="form-label">telefon</label>
+                            <input asp-for="Phone" class="form-control" placeholder="1234 Main St" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Postal_Code" class="form-label">posta kodu</label>
+                            <input asp-for="Postal_Code" class="form-control" placeholder="1234 Main St" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+
+                            <img src="~/img/odemeyontemleri.png" height=200px; width=600px; />
+                        </div>
+                        <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label asp-for="Card_name" class="form-label">Kart Üzerindeki isim</label>
+                                <input asp-for="Card_name" class="form-control" placeholder="" required="">
+                                <small class="text-muted">Full name as displayed on card</small>
+                                <div class="invalid-feedback">
+                                    Name on card is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Card_number" class="form-label">Kart Numarası</label>
+                                <input asp-for="Card_number" class="form-control" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                    Credit card number is required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="Expiration" class="form-label">son kullanma tarihi</label>
+                                <input asp-for="Expiration" class="form-control" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                    Expiration date required
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label asp-for="Cvv" class="form-label">CVV</label>
+                                <input asp-for="Cvv" class="form-control" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                    Security code required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="class=" row gy-3">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+
+                                    <label asp-for="Taksit" class="form-label" aria-label="Default select example">Taksit</label>
+                                    <select asp-for="Taksit" class="form-select" required="">
+                                        <option value="3">3 Taksit</option>
+                                        <option value="6">6 Taksit</option>
+                                        <option value="9">9 taksit</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Geçerli taksit sayısını seçin
+                                    </div>
+
+                                    @*  <div class="form-group">
+                                            <label asp-for="Taksit" class="control-label"></label>
+                                            <input asp-for="Taksit" class="form-control" />
+                                            <span asp-validation-for="Taksit" class="text-danger"></span>
+                                        </div>*@
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-group">
+                                        <label asp-for="Order_Date" class="control-label"></label>
+                                        <input asp-for="Order_Date" class="form-control" value="@(((DateTime)ViewBag.Date).ToString("dd-MMM-yyyy"))" />
+                                        <span asp-validation-for="Order_Date" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-group">
+                                        <label asp-for="Price" class="control-label">@ViewBag.a</label>
+                                        <input asp-for="Price" class="form-control" value="500 @ViewData["p"]" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-group">
+                                        <label asp-for="product_id" class="control-label"></label>
+                                        <input asp-for="product_id" class="form-control" value="1" />
+                                        <span asp-validation-for="product_id" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+
+                                    <input type="submit" value="Create" class="btn btn-primary btn-lg btn-block" />
+
+                                </div>
+
+                            </div>
+                        </div>
+                </form>
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+
+
+    </div>
+</div> 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

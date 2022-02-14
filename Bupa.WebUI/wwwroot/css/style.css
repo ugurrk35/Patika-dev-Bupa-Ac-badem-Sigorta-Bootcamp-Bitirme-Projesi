@@ -1,0 +1,22 @@
+.policeler  {
+margin-top: 20px;;
+}
+
+
+
+.container-md {
+    background-image:url(../sencard-bg.jpg);
+    background-repeat: no-repeat;
+	background-position: center;
+}
+.responsive {
+    width: 100%;
+    height: auto;
+  }
+  .sen-card img{
+      max-height: 400px;
+   
+  }
+  .accordion {
+    box-shadow: 5px 10px 5px grey;
+  }
