@@ -5,7 +5,7 @@
 
      
       
-            <h2>Get more libraries<asp:GridView ID="GridView1" runat="server" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" Width="368px">
+            <h2>Siparişler<asp:GridView ID="GridView1" runat="server" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" Width="477px">
                 </asp:GridView>
             </h2>
        
